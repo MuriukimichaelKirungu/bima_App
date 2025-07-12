@@ -1,3 +1,6 @@
+import 'package:bima/providers/auth_provider.dart';
+import 'package:bima/screens/auth/login_screen.dart';
+import 'package:bima/screens/auth/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +25,7 @@ class BimaApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => InsuranceProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         // Future: Add AuthProvider here when you implement auth
       ],
       child: MaterialApp(
@@ -33,8 +37,13 @@ class BimaApp extends StatelessWidget {
             border: OutlineInputBorder(),
           ),
         ),
-        home: const InsurancePlansScreen(),
-        // TODO: Add routes when you build login, register, detail, etc.
+        home: const LoginScreen(),
+        routes: {
+          '/login': (context) => const LoginScreen(),
+          '/register': (context) => const RegisterScreen(),
+          '/dashboard': (context) => const InsurancePlansScreen(),
+        },
+
       ),
     );
   }
