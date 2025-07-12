@@ -40,13 +40,37 @@ class InsuranceProvider extends ChangeNotifier {
   }
 
   List<InsurancePlan> get filteredPlans {
-    if (_selectedType == 'All') return [..._plans];
-    return _plans.where((p) => p.type == _selectedType).toList();
+    List<InsurancePlan> filtered = _selectedType == 'All'
+        ? [..._plans]
+        : _plans.where((p) => p.type == _selectedType).toList();
+
+    if (_searchQuery.isNotEmpty) {
+      filtered = filtered.where((p) =>
+      p.name.toLowerCase().contains(_searchQuery) ||
+          p.description.toLowerCase().contains(_searchQuery)).toList();
+    }
+
+    return filtered;
   }
+
 
   List<String> get planTypes {
     return ['All', ..._plans.map((p) => p.type).toSet()];
   }
 
-//  FILTERING LOGIC ENDS HERE
+  String _searchQuery = '';
+
+  String get searchQuery => _searchQuery;
+
+  void updateSearchQuery(String query) {
+    _searchQuery = query.toLowerCase();
+    notifyListeners();
+  }
+
+
+
+
 }
+
+
+

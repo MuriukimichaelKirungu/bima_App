@@ -16,9 +16,26 @@ class InsurancePlansScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Insurance Plans')),
       body: Column(
         children: [
-          // 🔽 Dropdown Filter
+          //  Search Field
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search plans...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onChanged: (value) {
+                provider.updateSearchQuery(value);
+              },
+            ),
+          ),
+
+          // Dropdown Filter
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
             child: DropdownButton<String>(
               value: provider.selectedType,
               items: provider.planTypes.map((type) {
@@ -36,23 +53,33 @@ class InsurancePlansScreen extends StatelessWidget {
             ),
           ),
 
-          // 📝 List of Plans
+          //  Plan List
           Expanded(
-            child: ListView.builder(
+            child: plans.isEmpty
+                ? const Center(child: Text("No plans found."))
+                : ListView.builder(
               itemCount: plans.length,
               itemBuilder: (ctx, index) {
                 final InsurancePlan plan = plans[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 6),
                   child: ListTile(
-                    leading: Image.network(plan.imageUrl, width: 50, height: 50),
+                    leading: Image.network(
+                      plan.imageUrl,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
                     title: Text(plan.name),
                     subtitle: Text(plan.description),
-                    trailing: Text('₦${plan.price.toStringAsFixed(0)}'),
+                    trailing:
+                    Text('₦${plan.price.toStringAsFixed(0)}'),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => InsuranceDetailScreen(plan: plan),
+                          builder: (_) =>
+                              InsuranceDetailScreen(plan: plan),
                         ),
                       );
                     },
