@@ -1,4 +1,5 @@
 import 'package:bima/providers/auth_provider.dart';
+import 'package:bima/screens/auth/auth_gate.dart';
 import 'package:bima/screens/auth/login_screen.dart';
 import 'package:bima/screens/auth/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +33,18 @@ class BimaApp extends StatelessWidget {
         title: 'Bima App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.teal,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+          useMaterial3: true,
           inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(),
           ),
+          textTheme: TextTheme(
+            titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            bodyMedium: TextStyle(fontSize: 16),
+          ),
         ),
-        home: const LoginScreen(),
+
+        home: const AuthGate(),
         routes: {
           '/login': (context) => const LoginScreen(),
           '/register': (context) => const RegisterScreen(),
